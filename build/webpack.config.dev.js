@@ -1,6 +1,9 @@
 const { join } = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
-const {HotModuleReplacementPlugin} = require('webpack')
+const { HotModuleReplacementPlugin } = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 module.exports = {
   mode: "development",
@@ -11,25 +14,54 @@ module.exports = {
     open: true,
     historyApiFallback: true,
     compress: true,
-    contentBase: join(__dirname, './../public/')
+    contentBase: join(__dirname, "./../src/")
   },
   module: {
     rules: [
+        {
+            test: /\.js$/,
+            use: ["babel-loader"]
+        },
       {
         test: /\.vue$/,
         loader: "vue-loader"
       },
       {
-          test: /\.css$/,
-          use: [
-              "vue-style-loader",
-              "css-loader"
-          ]
+        test: /\.css$/,
+        use: ["vue-style-loader", MiniCssExtractPlugin.loader, "css-loader"]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            outputPath: "img/",
+            publicPath: "img/"
+          }
+        }
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            outputPath: "fonts/",
+            publicPath: "fonts/"
+          }
+        }
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader"
       }
     ]
   },
   plugins: [
-      new HotModuleReplacementPlugin(),
-      new VueLoaderPlugin()
-    ]
+    new HotModuleReplacementPlugin(),
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+        template: 'src/index.html'
+    }),
+    new MiniCssExtractPlugin()
+  ]
 };

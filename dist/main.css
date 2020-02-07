@@ -1,0 +1,15 @@
+ @font-face {
+    font-family: GillSansRegular;
+    src: url(fonts/3c256200e33b0a45ef0f318b944dbc14.otf);
+  }
+
+
+body{
+    background-color: blue ; 
+    font-family: GillSansRegular !important;
+}
+
+h2[data-v-07aa2dbc]{
+    color: green;
+}
+
